@@ -22,7 +22,7 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({
         </p>
       </div>
       <div className="flex items-center space-x-2">
-        <span className="text-lg font-bold">${expense.amount.toFixed(2)}</span>
+        <span className="text-lg font-bold">₹{expense.amount.toFixed(2)}</span>
         <Button variant="secondary" onClick={() => onEdit(expense)}>
           Edit
         </Button>

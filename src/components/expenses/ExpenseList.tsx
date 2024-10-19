@@ -4,11 +4,19 @@ import ExpenseItem from "./ExpenseItem";
 import Button from "../ui/Button";
 import { useExpenses } from "../../context/ExpenseContext";
 import { Expense } from "../../types";
+import Input from "../ui/Input";
 
 const ExpenseList: React.FC = () => {
   const { expenses, deleteExpense } = useExpenses();
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [isAddingExpense, setIsAddingExpense] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredExpenses = useMemo(() => {
+    return expenses.filter((expense) =>
+      expense.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [expenses, searchTerm]);
 
   const totalExpenses = useMemo(() => {
     return expenses.reduce((total, expense) => total + expense.amount, 0);
@@ -30,6 +38,15 @@ const ExpenseList: React.FC = () => {
 
   return (
     <div>
+      <div className="mb-6">
+        <Input
+          type="text"
+          placeholder="Search expenses..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full px-4 py-2 rounded-full border-2 border-purple-300 focus:border-purple-500 focus:outline-none transition-colors"
+        />
+      </div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Expenses</h2>
         <Button onClick={() => setIsAddingExpense(true)}>Add Expense</Button>
@@ -44,9 +61,11 @@ const ExpenseList: React.FC = () => {
         />
       )}
 
-      {expenses.length === 0 ? (
+      {filteredExpenses.length === 0 ? (
         <p className="text-gray-500 text-center py-4">
-          No expenses added yet. Start by adding an expense!
+          {searchTerm
+            ? "No matching expenses found."
+            : "No expenses added yet. Start by adding an expense!"}
         </p>
       ) : (
         <div className="space-y-4">
@@ -61,7 +80,7 @@ const ExpenseList: React.FC = () => {
         </div>
       )}
       <div className="mt-6 text-xl font-bold">
-        Total Expenses: ${totalExpenses.toFixed(2)}
+        Total Expenses: ₹{totalExpenses.toFixed(2)}
       </div>
     </div>
   );
