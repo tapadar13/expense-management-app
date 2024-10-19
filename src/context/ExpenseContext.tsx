@@ -13,14 +13,10 @@ const ExpenseContext = createContext<ExpenseContextType | undefined>(undefined);
 export const ExpenseProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
-
-  useEffect(() => {
+  const [expenses, setExpenses] = useState<Expense[]>(() => {
     const storedExpenses = localStorage.getItem("expenses");
-    if (storedExpenses) {
-      setExpenses(JSON.parse(storedExpenses));
-    }
-  }, []);
+    return storedExpenses ? JSON.parse(storedExpenses) : [];
+  });
 
   useEffect(() => {
     localStorage.setItem("expenses", JSON.stringify(expenses));

@@ -43,16 +43,23 @@ const ExpenseList: React.FC = () => {
           onCancel={handleCancelEdit}
         />
       )}
-      <div className="space-y-4">
-        {expenses.map((expense) => (
-          <ExpenseItem
-            key={expense.id}
-            expense={expense}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        ))}
-      </div>
+
+      {expenses.length === 0 ? (
+        <p className="text-gray-500 text-center py-4">
+          No expenses added yet. Start by adding an expense!
+        </p>
+      ) : (
+        <div className="space-y-4">
+          {expenses.map((expense) => (
+            <ExpenseItem
+              key={expense.id}
+              expense={expense}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))}
+        </div>
+      )}
       <div className="mt-6 text-xl font-bold">
         Total Expenses: ${totalExpenses.toFixed(2)}
       </div>
