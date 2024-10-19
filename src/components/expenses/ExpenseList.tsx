@@ -69,7 +69,7 @@ const ExpenseList: React.FC = () => {
         </p>
       ) : (
         <div className="space-y-4">
-          {expenses.map((expense) => (
+          {filteredExpenses.map((expense) => (
             <ExpenseItem
               key={expense.id}
               expense={expense}
